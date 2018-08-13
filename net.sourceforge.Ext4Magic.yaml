@@ -1,0 +1,29 @@
+app-id: net.sourceforge.Ext4Magic
+runtime: org.freedesktop.Platform
+runtime-version: 1.6
+sdk: org.freedesktop.Sdk
+command: /app/sbin/ext4magic
+finish-args:
+  - '--filesystem=host'
+  - '--device=all'
+modules:
+  - name: file
+    buildsystem: autotools
+    sources:
+      - type: git
+        url: https://github.com/file/file
+        tag: FILE5_34
+      - type: script
+        commands:
+          - 'autoreconf -i'
+        dest-filename: autogen.sh
+  - name: ext4magic
+    buildsystem: autotools
+    sources:
+      - type: git
+        url: https://git.code.sf.net/p/ext4magic/code
+        tag: Release-beta-0-3-2
+  - name: libe2p
+    buildsystem: simple
+    build-commands:
+      - 'cp /usr/lib/{libe2p,libext2fs}.so.2 /app/lib'
